@@ -27,6 +27,9 @@ candidates_id = []
 for param in params:
     r = requests.get('http://inter01.tse.jus.br/spceweb.consulta.receitasdespesas2014/candidatoAutoComplete.do', params = param).text
     tree = et.fromstring(r)
-    candidates_id.append([element.text for element in tree.findall('sqCand') if element.text != '.'])
+    candidates_id.extend([element.text for element in tree.findall('sqCand') if element.text != '.'])
 
+#todo: get donations recursively
+d = requests.post('http://inter01.tse.jus.br/spceweb.consulta.receitasdespesas2014/resumoReceitasByCandidato.action', data = {'sqCandidato':'100000000134'}).text 
+dsoup = BeautifulSoup(d, 'html.parser')
 
