@@ -33,3 +33,11 @@ for param in params:
 d = requests.post('http://inter01.tse.jus.br/spceweb.consulta.receitasdespesas2014/resumoReceitasByCandidato.action', data = {'sqCandidato':'100000000134'}).text 
 dsoup = BeautifulSoup(d, 'html.parser')
 
+rows = dsoup.find_all('tr')
+
+tab = []
+
+for row in rows:
+    cols = row.find_all('td')
+    cols = [ele.text.strip() for ele in cols]
+    tab.append([ele for ele in cols if ele])
