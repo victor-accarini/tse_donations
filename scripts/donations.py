@@ -3,7 +3,9 @@ import xml.etree.cElementTree as et
 import requests
 import logging
 import pandas as pd
+import csv
 import re
+import io
 
 log = logging.getLogger('donations')
 log.addHandler(logging.StreamHandler())
@@ -60,19 +62,21 @@ if __name__ == '__main__':
     #candidates_id = get_tse_candidates_ids(roles, ufs)
 
     #todo: get donations recursively
-    d = requests.post(DONATIONS_URL, data = {'sqCandidato':'100000000134'}).text
-    dsoup = BeautifulSoup(d, 'html.parser')
-    print(dsoup)
+    csv_data = requests.post(DONATIONS_URL, data = {'sqCandidato':'100000000134'}).text
+    csv_buf = io.StringIO(csv_data)
+    data = pd.read_csv(csv_buf, sep=';')
+    print(data)
+    #dsoup = BeautifulSoup(d, 'html.parser')
 
-    rows = dsoup.find_all('tr')
+    #rows = dsoup.find_all('tr')
 
-    tab = []
+    #tab = []
 
-    for row in rows:
-        cols = row.find_all('td')
-        cols = [ele.text.strip() for ele in cols]
-        tab.append([ele for ele in cols if ele])
-        log.debug(cols)
-        break;
+    #for row in rows:
+    #    cols = row.find_all('td')
+    #    cols = [ele.text.strip() for ele in cols]
+    #    tab.append([ele for ele in cols if ele])
+    #    log.debug(cols)
+    #    break;
 
 
